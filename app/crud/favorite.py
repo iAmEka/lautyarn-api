@@ -1,25 +1,17 @@
-# app/crud/favorite.py
 from sqlalchemy.orm import Session
 import uuid
-
-# Impor Model ORM SQLAlchemy Favorite yang BENAR (dari models)
-# Karena Favorite memiliki FK ke Customer dan Rajutan, kita juga perlu model mereka jika digunakan di CRUD Favorite
 from ..models.favorite import Favorite as FavoriteModel
-from ..models.customer import Customer as CustomerModel # Jika diperlukan untuk relasi/join di CRUD ini
-from ..models.rajutan import Rajutan as RajutanModel   # Jika diperlukan untuk relasi/join di CRUD ini
-
-
-# Impor Skema Pydantic Favorite (dari schemas)
-from ..schemas.favorite import FavoriteCreate, Favorite as FavoriteSchema # Impor spesifik
+from ..models.rajutan import Rajutan as RajutanModel
+from ..schemas.favorite import FavoriteCreate
 
 def get_favorite(db: Session, favorite_id: uuid.UUID):
     return db.query(FavoriteModel).filter(FavoriteModel.id == favorite_id).first()
 
-def get_customer_favorites(db: Session, customer_id: uuid.UUID, skip: int = 0, limit: int = 100):
-    return db.query(FavoriteModel).filter(FavoriteModel.id_customer == customer_id).offset(skip).limit(limit).all()
+def get_user_favorites(db: Session, user_id: uuid.UUID, skip: int = 0, limit: int = 100):
+    return db.query(FavoriteModel).filter(FavoriteModel.id_user == user_id).offset(skip).limit(limit).all()
 
-def create_favorite(db: Session, favorite: FavoriteCreate): # Gunakan FavoriteCreate langsung
-    db_favorite = FavoriteModel(**favorite.dict()) # Gunakan FavoriteModel
+def create_favorite(db: Session, favorite: FavoriteCreate):
+    db_favorite = FavoriteModel(**favorite.dict())
     db.add(db_favorite)
     db.commit()
     db.refresh(db_favorite)

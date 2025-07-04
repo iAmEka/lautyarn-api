@@ -2,7 +2,7 @@ from pydantic import BaseModel
 import uuid
 
 class FavoriteBase(BaseModel):
-    id_customer: uuid.UUID
+    id_user: uuid.UUID
     id_rajutan: uuid.UUID
 
 class FavoriteCreate(FavoriteBase):
@@ -12,4 +12,4 @@ class Favorite(FavoriteBase):
     id: uuid.UUID
 
     class Config:
-        from_attributes = True  
+        from_attributes = True

@@ -8,9 +8,9 @@ class KomentarProduk(Base):
     __tablename__ = "komentar_produk"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    id_customer = Column(UUID(as_uuid=True), ForeignKey("customers.id"))
-    id_rajutan = Column(UUID(as_uuid=True), ForeignKey("rajutan.id"))
-    pesan = Column(String)
+    id_user = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
+    id_rajutan = Column(UUID(as_uuid=True), ForeignKey("rajutan.id"), nullable=False)
+    pesan = Column(String, nullable=False)
 
-    customer = relationship("Customer")
-    rajutan = relationship("Rajutan") 
+    user = relationship("User")
+    rajutan = relationship("Rajutan")
