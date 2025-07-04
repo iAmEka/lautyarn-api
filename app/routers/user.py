@@ -1,4 +1,3 @@
-# app/routers/user.py
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
@@ -17,23 +16,27 @@ router = APIRouter(
     tags=["Users"]
 )
 
+# 🔄 POST /users/
 @router.post("/", response_model=User)
 def create_user_endpoint(user: UserCreate, db: Session = Depends(get_db)):
     if get_user_by_uid(db, user.uid):
         raise HTTPException(status_code=400, detail="UID already registered")
     return create_user(db, user)
 
+# 🔄 GET /users/
 @router.get("/", response_model=List[User])
 def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return get_users(db, skip, limit)
 
-@router.get("/by-uid/{uid}", response_model=User)
+# ✅ GET /users/uid/{uid} -> untuk login Google
+@router.get("/uid/{uid}", response_model=User)
 def read_user_by_uid(uid: str, db: Session = Depends(get_db)):
     user = get_user_by_uid(db, uid)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     return user
 
+# 🔄 GET /users/{user_id}
 @router.get("/{user_id}", response_model=User)
 def read_user(user_id: uuid.UUID, db: Session = Depends(get_db)):
     user = get_user(db, user_id)
@@ -41,6 +44,7 @@ def read_user(user_id: uuid.UUID, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="User not found")
     return user
 
+# 🔄 PUT /users/{user_id}
 @router.put("/{user_id}", response_model=User)
 def update_user_endpoint(user_id: uuid.UUID, user: UserUpdate, db: Session = Depends(get_db)):
     db_user = update_user(db, user_id, user)
@@ -48,6 +52,7 @@ def update_user_endpoint(user_id: uuid.UUID, user: UserUpdate, db: Session = Dep
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
 
+# 🔄 DELETE /users/{user_id}
 @router.delete("/{user_id}")
 def delete_user_endpoint(user_id: uuid.UUID, db: Session = Depends(get_db)):
     db_user = delete_user(db, user_id)
