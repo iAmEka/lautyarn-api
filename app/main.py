@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .database import Base, engine
-from .routers import admin, customer, rajutan, favorite, komentar
+from .routers import user, rajutan, favorite, komentar  # ganti `admin`, `customer` jadi `user`
 
 # Buat semua tabel di database (jika belum ada)
 Base.metadata.create_all(bind=engine)
@@ -10,26 +10,25 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI(
     title="Lautyarn API",
     description="API for managing Lautyarn knitting products and users.",
-    version="0.1.0"
+    version="1.0.0"
 )
 
 # ✅ Konfigurasi CORS
 origins = [
-    "http://localhost:5173",         # untuk pengembangan lokal React
-    "https://lautyarn.netlify.app",  # sesuaikan dengan domain deploy React Anda (opsional)
+    "http://localhost:5173",         # Pengembangan lokal
+    "https://lautyarn.netlify.app",  # Produksi (Netlify)
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,           # bisa juga ["*"] untuk testing saja
+    allow_origins=origins,           # Untuk testing bisa ["*"], tapi hindari di produksi
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# ✅ Registrasi semua router
-app.include_router(admin.router)
-app.include_router(customer.router)
+# ✅ Registrasi router yang digunakan
+app.include_router(user.router)        # router baru pengganti admin & customer
 app.include_router(rajutan.router)
 app.include_router(favorite.router)
 app.include_router(komentar.router)
