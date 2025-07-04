@@ -14,6 +14,10 @@ def get_admin(db: Session, admin_id: uuid.UUID):
 def get_admin_by_email(db: Session, email: str):
     return db.query(AdminModel).filter(AdminModel.email == email).first() # Gunakan AdminModel
 
+def get_admin_by_uid(db: Session, firebase_uid: str):
+    return db.query(AdminModel).filter(AdminModel.firebase_uid == firebase_uid).first()
+
+
 def get_admins(db: Session, skip: int = 0, limit: int = 100):
     return db.query(AdminModel).offset(skip).limit(limit).all() # Gunakan AdminModel
 

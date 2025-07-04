@@ -38,6 +38,14 @@ def read_customer_endpoint(customer_id: uuid.UUID, db: Session = Depends(get_db)
         raise HTTPException(status_code=404, detail="Customer not found")
     return db_customer
 
+@router.get("/by-uid/{firebase_uid}", response_model=Customer)
+def get_customer_by_uid(firebase_uid: str, db: Session = Depends(get_db)):
+    db_customer = db.query(Customer).filter(Customer.firebase_uid == firebase_uid).first()
+    if not db_customer:
+        raise HTTPException(status_code=404, detail="Customer not found")
+    return db_customer
+
+
 @router.put("/{customer_id}", response_model=Customer)
 def update_customer_endpoint(customer_id: uuid.UUID, customer: CustomerUpdate, db: Session = Depends(get_db)):
     # Hapus "crud." di sini

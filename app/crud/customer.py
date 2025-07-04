@@ -14,6 +14,10 @@ def get_customer(db: Session, customer_id: uuid.UUID):
 def get_customer_by_email(db: Session, email: str):
     return db.query(CustomerModel).filter(CustomerModel.email == email).first()
 
+def get_customer_by_uid(db: Session, firebase_uid: str):
+    return db.query(CustomerModel).filter(CustomerModel.firebase_uid == firebase_uid).first()
+
+
 def get_customers(db: Session, skip: int = 0, limit: int = 100):
     return db.query(CustomerModel).offset(skip).limit(limit).all()
 

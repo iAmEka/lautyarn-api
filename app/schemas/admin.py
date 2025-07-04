@@ -9,6 +9,8 @@ class AdminBase(BaseModel):
     username: str
     nomor_telepon: str
     alamat: str
+    firebase_uid: str
+
 
 class AdminCreate(AdminBase):
     pass

@@ -8,6 +8,8 @@ class CustomerBase(BaseModel):
     username: str
     nomor_telepon: str
     alamat: str
+    firebase_uid: str
+
 
 class CustomerCreate(CustomerBase):
     pass

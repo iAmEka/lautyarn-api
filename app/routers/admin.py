@@ -39,6 +39,13 @@ def read_admin_endpoint(admin_id: uuid.UUID, db: Session = Depends(get_db)):
     if db_admin is None:
         raise HTTPException(status_code=404, detail="Admin not found")
     return db_admin
+@router.get("/by-uid/{firebase_uid}", response_model=Admin)
+def get_admin_by_uid(firebase_uid: str, db: Session = Depends(get_db)):
+    db_admin = db.query(Admin).filter(Admin.firebase_uid == firebase_uid).first()
+    if not db_admin:
+        raise HTTPException(status_code=404, detail="Admin not found")
+    return db_admin
+
 
 @router.put("/{admin_id}", response_model=Admin)
 def update_admin_endpoint(admin_id: uuid.UUID, admin: AdminUpdate, db: Session = Depends(get_db)):
