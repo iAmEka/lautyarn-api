@@ -1,14 +1,17 @@
-# app/routers/rajutan.py
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
 import uuid
 
 from .. import models
-from ..schemas.rajutan import Rajutan, RajutanCreate, RajutanUpdate
-# Anda sudah mengimpor fungsi-fungsi ini secara spesifik
-from ..crud.rajutan import create_rajutan, get_rajutan, get_all_rajutan, update_rajutan, delete_rajutan
-
+from ..schemas.rajutan import Rajutan, RajutanCreate, RajutanUpdate, RajutanWithType
+from ..crud.rajutan import (
+    create_rajutan,
+    get_rajutan,
+    get_all_rajutan,
+    update_rajutan,
+    delete_rajutan,
+)
 from ..database import get_db
 
 router = APIRouter(
@@ -18,18 +21,15 @@ router = APIRouter(
 
 @router.post("/", response_model=Rajutan)
 def create_rajutan_endpoint(rajutan: RajutanCreate, db: Session = Depends(get_db)):
-    # Hapus "crud." di sini
     return create_rajutan(db=db, rajutan=rajutan)
 
-@router.get("/", response_model=List[Rajutan])
+@router.get("/", response_model=List[RajutanWithType])
 def read_all_rajutan_endpoint(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    # Hapus "crud." di sini
     rajutans = get_all_rajutan(db, skip=skip, limit=limit)
     return rajutans
 
-@router.get("/{rajutan_id}", response_model=Rajutan)
+@router.get("/{rajutan_id}", response_model=RajutanWithType)
 def read_rajutan_endpoint(rajutan_id: uuid.UUID, db: Session = Depends(get_db)):
-    # Hapus "crud." di sini
     db_rajutan = get_rajutan(db, rajutan_id=rajutan_id)
     if db_rajutan is None:
         raise HTTPException(status_code=404, detail="Rajutan not found")
@@ -37,7 +37,6 @@ def read_rajutan_endpoint(rajutan_id: uuid.UUID, db: Session = Depends(get_db)):
 
 @router.put("/{rajutan_id}", response_model=Rajutan)
 def update_rajutan_endpoint(rajutan_id: uuid.UUID, rajutan: RajutanUpdate, db: Session = Depends(get_db)):
-    # Hapus "crud." di sini
     db_rajutan = update_rajutan(db, rajutan_id=rajutan_id, rajutan=rajutan)
     if db_rajutan is None:
         raise HTTPException(status_code=404, detail="Rajutan not found")
@@ -45,7 +44,6 @@ def update_rajutan_endpoint(rajutan_id: uuid.UUID, rajutan: RajutanUpdate, db: S
 
 @router.delete("/{rajutan_id}")
 def delete_rajutan_endpoint(rajutan_id: uuid.UUID, db: Session = Depends(get_db)):
-    # Hapus "crud." di sini
     db_rajutan = delete_rajutan(db, rajutan_id=rajutan_id)
     if db_rajutan is None:
         raise HTTPException(status_code=404, detail="Rajutan not found")
