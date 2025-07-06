@@ -1,7 +1,7 @@
-# app/models/rajutan.py
-from sqlalchemy import Column, Integer, String, ARRAY, ForeignKey
+from sqlalchemy import Column, Integer, String, ARRAY, ForeignKey, DateTime
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
+from sqlalchemy.sql import func
 import uuid
 from ..database import Base
 
@@ -17,9 +17,8 @@ class Rajutan(Base):
     url_gambar = Column(String, nullable=True)
     status = Column(String, default="ready")
     deskripsi = Column(String, nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
-    # Foreign key ke type_rajutan
     id_type = Column(UUID(as_uuid=True), ForeignKey("type_rajutan.id"), nullable=False)
-
-    # Relationship ke model type
     type_rajutan = relationship("TypeRajutan", back_populates="rajutans")

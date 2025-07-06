@@ -25,8 +25,7 @@ def create_rajutan_endpoint(rajutan: RajutanCreate, db: Session = Depends(get_db
 
 @router.get("/", response_model=List[RajutanWithType])
 def read_all_rajutan_endpoint(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    rajutans = get_all_rajutan(db, skip=skip, limit=limit)
-    return rajutans
+    return get_all_rajutan(db, skip=skip, limit=limit)
 
 @router.get("/{rajutan_id}", response_model=RajutanWithType)
 def read_rajutan_endpoint(rajutan_id: uuid.UUID, db: Session = Depends(get_db)):

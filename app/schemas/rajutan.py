@@ -1,7 +1,8 @@
 from pydantic import BaseModel, validator
 from typing import List, Optional
+from datetime import datetime
 import uuid
-from .type_rajutan import TypeRajutan  # <== Tambahkan ini
+from .type_rajutan import TypeRajutan
 
 class RajutanBase(BaseModel):
     nama: str
@@ -12,7 +13,7 @@ class RajutanBase(BaseModel):
     url_gambar: Optional[str] = None
     status: Optional[str] = "ready"
     deskripsi: Optional[str] = None
-    id_type: uuid.UUID  # <== Tambahkan ini
+    id_type: uuid.UUID
 
     @validator("status")
     def validate_status(cls, v):
@@ -33,7 +34,7 @@ class RajutanUpdate(BaseModel):
     url_gambar: Optional[str] = None
     status: Optional[str] = None
     deskripsi: Optional[str] = None
-    id_type: Optional[uuid.UUID] = None  # <== jangan lupa ini
+    id_type: Optional[uuid.UUID] = None
 
     @validator("status")
     def validate_status(cls, v):
@@ -44,13 +45,14 @@ class RajutanUpdate(BaseModel):
 
 class Rajutan(RajutanBase):
     id: uuid.UUID
+    created_at: Optional[datetime]
+    updated_at: Optional[datetime]
 
     class Config:
         from_attributes = True
 
-# Optional: Return dengan relasi ke type_rajutan
 class RajutanWithType(Rajutan):
-    type_rajutan: Optional[TypeRajutan]  # <== nested response
+    type_rajutan: Optional[TypeRajutan]
 
     class Config:
         from_attributes = True
