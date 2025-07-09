@@ -15,12 +15,18 @@ class RajutanBase(BaseModel):
     deskripsi: Optional[str] = None
     id_type: uuid.UUID
 
+    bahan: Optional[List[str]] = []
+    pengrajin: Optional[str] = None
+    ukuran: Optional[str] = None
+    lama_pengerjaan: Optional[str] = None
+
     @validator("status")
     def validate_status(cls, v):
         allowed = {"ready", "pre_order"}
         if v not in allowed:
             raise ValueError(f"Status harus salah satu dari: {allowed}")
         return v
+
 
 class RajutanCreate(RajutanBase):
     pass
@@ -35,6 +41,12 @@ class RajutanUpdate(BaseModel):
     status: Optional[str] = None
     deskripsi: Optional[str] = None
     id_type: Optional[uuid.UUID] = None
+
+    bahan: Optional[List[str]] = None
+    pengrajin: Optional[str] = None
+    ukuran: Optional[str] = None
+    lama_pengerjaan: Optional[str] = None
+
 
     @validator("status")
     def validate_status(cls, v):

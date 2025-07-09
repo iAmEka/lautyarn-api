@@ -17,8 +17,15 @@ class Rajutan(Base):
     url_gambar = Column(String, nullable=True)
     status = Column(String, default="ready")
     deskripsi = Column(String, nullable=True)
+
+    bahan = Column(ARRAY(String), nullable=True)
+    pengrajin = Column(String, nullable=True)
+    ukuran = Column(String, nullable=True)
+    lama_pengerjaan = Column(String, nullable=True)
+
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
     id_type = Column(UUID(as_uuid=True), ForeignKey("type_rajutan.id"), nullable=False)
     type_rajutan = relationship("TypeRajutan", back_populates="rajutans")
+    
