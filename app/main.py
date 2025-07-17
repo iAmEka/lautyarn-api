@@ -15,6 +15,7 @@ app = FastAPI(
 origins = [
     "http://localhost:5173",
     "https://lautyarn.netlify.app",
+    'https://shop-lautyarn.vercel.app',
     "https://lautyarn-website.vercel.app"
 ]
 
