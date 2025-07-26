@@ -1,6 +1,7 @@
 # app/models/user.py
 from sqlalchemy import Column, String
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.orm import relationship
 import uuid
 from ..database import Base
 
@@ -15,3 +16,5 @@ class User(Base):
     nomor_telepon = Column(String)
     alamat = Column(String)
     role = Column(String)  # 'admin' atau 'customer'
+
+    pesanan = relationship("Pesanan", back_populates="user")

@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .database import Base, engine
-from .routers import user, rajutan, favorite, komentar, type_rajutan  # ✅ tambahkan type_rajutan
+from .routers import user, rajutan, favorite, komentar, type_rajutan, pesanan, detail_pesanan, cart
 
 Base.metadata.create_all(bind=engine)
 
@@ -32,7 +32,10 @@ app.include_router(user.router)
 app.include_router(rajutan.router)
 app.include_router(favorite.router)
 app.include_router(komentar.router)
-app.include_router(type_rajutan.router)  # ✅ router baru ditambahkan
+app.include_router(type_rajutan.router)  
+app.include_router(pesanan.router)
+app.include_router(detail_pesanan.router)
+app.include_router(cart.router)  # ✅ tambahkan cart router
 
 @app.get("/")
 def read_root():
